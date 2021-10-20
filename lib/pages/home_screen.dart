@@ -24,7 +24,7 @@ import 'package:flutter_instagram_cloneapp2/models/Post.dart';
         backgroundColor: Color.fromRGBO(203, 73, 101, 1.0),
         elevation: 5,
         leading: Icon(Icons.camera_alt_rounded),
-        title: Text("Instagram"),
+        title: Text("Instagram",style: TextStyle(fontFamily: 'Ubuntu-Medium'),),
         actions: [
           IconButton(icon: Icon(Icons.live_tv),onPressed: (){},),
           IconButton(icon: Icon(Icons.near_me_outlined),onPressed: (){},),
@@ -65,7 +65,7 @@ import 'package:flutter_instagram_cloneapp2/models/Post.dart';
                   alignment: Alignment.center,
                   width: 50,
                   height: 20,
-                  child: Text(item.id,overflow: TextOverflow.fade,)
+                  child: Text(item.id,overflow: TextOverflow.fade,style: TextStyle(fontFamily: 'Ubuntu-Medium'),)
               ),
             ],
           ),
@@ -116,9 +116,108 @@ import 'package:flutter_instagram_cloneapp2/models/Post.dart';
     _buildListItem(Post item) {
         return Container(
               margin: EdgeInsets.all(6),
-              height: 450,
+              height: 550,
+              color: Colors.white,
               width: double.infinity,
-              color: Colors.red,
+              child: Column(
+                children: [
+                  _buildItemProfile(item),
+                  _buildItemPost(item.img),
+                  _buildItemMenu(),
+                ],
+              ),
+        );
+    }
+    _buildItemProfile(Post item) {
+        return Container(
+            height: 70,
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                  Container(
+                    width: 250,
+                    child: Row(
+                      children: [
+                        _buildCircleProfileImage(item.img),
+                        SizedBox(width: 5,),
+                        Text(item.id,style: TextStyle(fontSize: 16,fontFamily: 'Ubuntu-Medium'),),
+                      ],
+                    ),
+                  ),
+                  IconButton(icon: Icon(Icons.more_horiz,size: 30,),onPressed: (){}),
+              ],
+            ),
+        );
+    }
+    _buildCircleProfileImage(String img) {
+      return Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Colors.pink,
+                  Colors.white70],
+              ),
+            ),
+          ),
+          Container(
+            width: 55,
+            height: 55,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: CachedNetworkImageProvider(img),
+                    fit: BoxFit.cover
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    //Item Post
+    _buildItemPost(String img) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          height: 420,
+          child: CachedNetworkImage(
+            fit: BoxFit.cover,
+            imageUrl: img,
+            placeholder: (context, url) => Container(color: Colors.white,),
+            errorWidget: (context, err, url) => Container(color: Colors.blueGrey,),
+          ),
+        );
+    }
+    _buildItemMenu() {
+        return Container(
+            width: MediaQuery.of(context).size.width,
+            height: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Row(
+                    children: [
+                      IconButton(icon: Icon(Icons.favorite_border,size: 30,),onPressed: (){}),
+                      SizedBox(width: 10,),
+                      IconButton(icon: Icon(Icons.message,size: 30,),onPressed: (){}),
+                      SizedBox(width: 10,),
+                      IconButton(icon: Icon(Icons.send,size: 30,),onPressed: (){}),
+                    ],
+                  ),
+                ),
+                IconButton(icon: Icon(Icons.bookmark_border_outlined,size: 30,),onPressed: (){}),
+              ],
+            ),
         );
     }
   }
